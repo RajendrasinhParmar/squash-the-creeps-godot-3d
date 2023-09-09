@@ -9,6 +9,9 @@ extends CharacterBody3D
 # Vertical impulse applied to the character upon jumping in meters per seconds
 @export var jump_impulse = 20
 
+# Vertical impulse applied to the character upon bouncing over a mob in meters per second
+@export var bounce_impulse = 16
+
 var target_velocity = Vector3.ZERO
 
 func _physics_process(delta):
@@ -46,4 +49,21 @@ func _physics_process(delta):
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		target_velocity.y = jump_impulse
 	
+	# Iterate through all collisions that occurred this frame
+	for index in range(get_slide_collision_count()):
+		# We get one of the collisions with the player
+		var collision = get_slide_collision(index)
+		
+		# If the collision is with ground
+		if (collision.get_collider() == null):
+			continue
+		
+		# If the collision is with a mob
+		if collision.get_collider().is_in_group("mob"):
+			var mob = collision.get_collider()
+			
+			# We check that we are hitting it from above or not?
+			if Vector3.UP.dot(collision.get_normal()) > 0.1:
+				mob.squash()
+				target_velocity.y = bounce_impulse
 	move_and_slide()

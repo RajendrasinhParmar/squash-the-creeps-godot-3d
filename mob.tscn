@@ -6,7 +6,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifch7"]
 size = Vector3(2.30737, 1.31941, 2.7408)
 
-[node name="Mob" type="CharacterBody3D"]
+[node name="Mob" type="CharacterBody3D" groups=["mob"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.267706, 0)
 collision_layer = 2
 collision_mask = 0
